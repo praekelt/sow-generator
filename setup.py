@@ -12,9 +12,11 @@ setup(
     url='http://github.com/praekelt/sow-generator',
     packages = find_packages(),
     install_requires = [
-        'Django',
+        'Django<1.7',
+        'South',
         'celery',
         'django-celery',
+        'raven'
     ],
     include_package_data=True,
     tests_require=[

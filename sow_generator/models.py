@@ -24,8 +24,12 @@ class Repository(models.Model):
                 return "%s - %s" % (self.title, self.description)
             else:
                 return self.title
-        return self.url
+        return self.name
 
+    @property
+    def orgname(self):
+        li = self.name.split("/")
+        return li[0], li[1]
 
 class AuthToken(models.Model):
     token = models.CharField(max_length=512, editable=False)

@@ -16,7 +16,10 @@ setup(
         'South',
         'celery',
         'django-celery',
-        'raven'
+        'raven',
+        'PyYAML',
+        'requests',
+        'github3.py',
     ],
     include_package_data=True,
     tests_require=[

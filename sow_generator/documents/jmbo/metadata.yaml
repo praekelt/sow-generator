@@ -1,9 +1,9 @@
 title: Jmbo based project
 
 required_modules:
-    jmbo
-    jmbo-foundry
+    - jmbo
+    - jmbo-foundry
 
 optional_modules:
-    jmbo-post
-    jmbo-gallery
+    - jmbo-post
+    - jmbo-gallery

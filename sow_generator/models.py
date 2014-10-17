@@ -21,3 +21,18 @@ class Repository(models.Model):
             else:
                 return self.title
         return self.url
+
+
+class AuthToken(models.Model):
+    token = models.CharField(max_length=512, editable=False)
+
+    def save(self, *args, **kwargs):
+        self.id = 1
+        super(AuthToken, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        pass
+
+
+class AuthState(models.Model):
+    state = models.CharField(max_length=512, editable=False)

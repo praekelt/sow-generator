@@ -6,9 +6,8 @@ from sow_generator.models import Repository
 
 
 class RepositoryAdmin(admin.ModelAdmin):
-    list_display = ("url", "title", "description", "_actions")
-    search_fields = ("url", "title",)
-
+    list_display = ("name", "title", "description", "_actions")
+    search_fields = ("name", "title",)
 
     def _actions(self, obj):
         url = reverse("sow-generator-ajax-sync-repository", args=[obj.id])

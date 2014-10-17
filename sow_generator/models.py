@@ -5,7 +5,11 @@ from django.contrib.auth.models import User
 
 
 class Repository(models.Model):
-    url = models.CharField(max_length=512)
+    name = models.CharField(
+        max_length=256,
+        unique=True,
+        help_text="Eg. praekelt/jmbo-post"
+    )
     title = models.CharField(max_length=256, null=True, editable=False)
     description = models.TextField(null=True, editable=False)
     readme = models.TextField(null=True, editable=False)

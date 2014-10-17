@@ -7,10 +7,7 @@ from celery.task.schedules import crontab
 
 from sow_generator.models import Repository, AuthToken
 
-
-@task(max_retries=5)
-def sync_repository(id):
-    obj = Repository.objects.get(id=id)
+def _sync_repository(obj):
     dirty = False
     token = AuthToken.objects.get(id=1).token
     gh = login(token=token)
@@ -26,8 +23,14 @@ def sync_repository(id):
     if dirty:
         obj.save()
 
+@task(max_retries=5)
+def sync_repository(id):
+    obj = Repository.objects.get(id=id)
+    _sync_repository(obj)
+
 
 @periodic_task(run_every=crontab(hour='*', minute='0', day_of_week='*'))
 def sync_repositories():
     """Sync all repositories"""
-    pass
+    for obj in Repository.objects.all():
+        _sync_repository(obj)

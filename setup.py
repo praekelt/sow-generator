@@ -20,6 +20,7 @@ setup(
         'PyYAML',
         'requests',
         'github3.py',
+        'docutils',
     ],
     include_package_data=True,
     tests_require=[

@@ -1,3 +1,5 @@
+from docutils.core import publish_string
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
@@ -29,7 +31,17 @@ class Repository(models.Model):
     @property
     def orgname(self):
         li = self.name.split("/")
-        return li[0], li[1]
+        if len(li) == 2:
+            return li[0], li[1]
+        else:
+            return "praekelt", li[0]
+
+    @property
+    def readme_html(self):
+        if not self.readme:
+            return ""
+        return publish_string(self.readme, writer_name="html")
+
 
 class AuthToken(models.Model):
     token = models.CharField(max_length=512, editable=False)

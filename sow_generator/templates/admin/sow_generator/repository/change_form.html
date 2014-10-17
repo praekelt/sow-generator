@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+
+{% block after_related_objects %}
+
+<fieldset class="module aligned">
+    <div class="form-row">
+    <label>Readme</label>
+    <br />
+    {{ original.readme_html|safe }}
+    </div>
+</fieldset>
+
+{% endblock %}

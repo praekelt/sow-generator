@@ -1,14 +1,72 @@
 {% extends "admin/base.html" %}
-{% load sow_generator_tags %}
+{% load admin_static sow_generator_tags %}
 
 {% block content %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $('ul.sortable').sortable({
+                opacity: 0.5,
+                update: function(event, ui) {
+                }
+            }).disableSelection();
+
+            $(document).on('click', 'div.sizer', function(e){
+                $(this).toggleClass('maximized');
+                $('div.content', $(this).parent()).toggle();
+                return false;
+            });
+
+            $(document).on('change', 'div.includer input', function(e){
+                return false;
+            });
+
+    });
+    </script>
+
+    <style type="text/css">
+        ul.sortable li { cursor: grab; }
+        div.title { float: left; }
+        div.sizer {
+            cursor: pointer;
+            background-image: url('{% static 'admin/sow_generator/images/arrow_down.png' %}');
+            background-repeat: no-repeat;
+            float: left;
+            width: 16px;
+            height: 16px;
+        }
+        div.maximized { background-image: url('{% static 'admin/sow_generator/images/arrow_up.png' %}'); }
+        div.includer { float: left; }
+        div.content { clear: both; }
+    </style>
+
     <h1>Select and order modules</h1>
+    <div class="buttons">
+        <input type="submit" value="Generate!" />
+    </div>
+    <br/ >
+    <hr />
+    <br />
 
     {{ header|markdown_to_html|safe }}
 
-    {% for repo in repos %}
-        {{ repo }}
-    {% endfor %}
+    {% if repos %}
+        <ul class="sortable">
+            {% for repo in repos %}
+                <li>
+                    <div class="title">{{ repo.name }}</div>
+                    <div class="sizer"></div>
+                    <div class="includer"><input type="checkbox" value="1" checked /></div>
+                    <div class="content" style="display: none;">
+                        {{ repo.readme_html|safe }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     {{ footer|markdown_to_html|safe }}
 

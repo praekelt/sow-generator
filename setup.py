@@ -20,7 +20,8 @@ setup(
         'PyYAML',
         'requests',
         'github3.py',
-        'docutils',
+        'pyandoc',
+        'django-object-tools',
     ],
     include_package_data=True,
     tests_require=[

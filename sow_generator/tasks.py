@@ -15,9 +15,15 @@ def _sync_repository(obj):
     org, name = obj.orgname
     repo = gh.repository(org, name)
     if repo is not None:
-        readme = repo.contents('README.rst')
+        readme = repo.contents("README.rst")
         if readme is not None:
             obj.readme = readme.decoded
+            obj.readme_format = "rst"
+            dirty = True
+        readme = repo.contents("README.md")
+        if readme is not None:
+            obj.readme = readme.decoded
+            obj.readme_format = "md"
             dirty = True
 
     if dirty:

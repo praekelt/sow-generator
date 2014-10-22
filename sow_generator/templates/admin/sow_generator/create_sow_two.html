@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+{% load sow_generator_tags %}
+
+{% block content %}
+    <h1>Select and order modules</h1>
+
+    {{ header|markdown_to_html|safe }}
+
+    {% for repo in repos %}
+        {{ repo }}
+    {% endfor %}
+
+    {{ footer|markdown_to_html|safe }}
+
+{% endblock %}

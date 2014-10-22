@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+    <h1>Create a scope of work</h1>
+
+    <ul>
+    {% for k, di in documents.items %}
+        <li>
+            <a href="/admin/create-sow-two?document_key={{ k }}">{{ di.title }}</a>
+            {% if di.description %}
+                <p>{{ di.description }}</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

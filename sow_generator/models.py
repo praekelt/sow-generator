@@ -1,4 +1,4 @@
-from docutils.core import publish_string
+import pandoc
 
 from django.db import models
 from django.utils import timezone
@@ -15,7 +15,9 @@ class Repository(models.Model):
     title = models.CharField(max_length=256, null=True, editable=False)
     description = models.TextField(null=True, editable=False)
     readme = models.TextField(null=True, editable=False)
+    readme_format = models.CharField(max_length=8, null=True, editable=False)
     business = models.TextField(null=True, editable=False)
+    business_format = models.CharField(max_length=8, null=True, editable=False)
 
     class Meta:
         verbose_name_plural = "Repositories"
@@ -28,8 +30,16 @@ class Repository(models.Model):
                 return self.title
         return self.name
 
+    def save(self, *args, **kwargs):
+        # Prefix name with praekelt if organisation not supplied
+        li = self.name.split("/")
+        if len(li) == 1:
+            self.name = "praekelt/%s" % self.name
+        super(Repository, self).save(*args, **kwargs)
+
     @property
     def orgname(self):
+        # Return name split into organisation and repo name
         li = self.name.split("/")
         if len(li) == 2:
             return li[0], li[1]
@@ -40,7 +50,13 @@ class Repository(models.Model):
     def readme_html(self):
         if not self.readme:
             return ""
-        return publish_string(self.readme, writer_name="html")
+        # todo: cache
+        doc = pandoc.Document()
+        if self.readme_format == "rst":
+            doc.rst = self.readme
+        elif self.readme_format == "md":
+            doc.markdown = self.readme
+        return doc.html
 
 
 class AuthToken(models.Model):

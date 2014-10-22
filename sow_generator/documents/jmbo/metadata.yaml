@@ -1,4 +1,5 @@
 title: Jmbo based project
+description: This is a description for a Jmbo based project.
 
 required_modules:
     - praekelt/jmbo

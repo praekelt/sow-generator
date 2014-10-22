@@ -1,7 +1,7 @@
 import os
 
-import yaml
 import requests
+import pandoc
 
 from django import forms
 from django.contrib import admin
@@ -12,11 +12,14 @@ from django.middleware.csrf import _sanitize_token, _get_new_csrf_key
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf.urls import patterns
 from django.contrib import messages
+from django.utils import timezone
 from django.conf import settings
 
 from sow_generator.models import Repository, AuthToken, AuthState
 from sow_generator import tasks
 from sow_generator import DOCUMENTS
+from sow_generator.forms import GenerateForm
+from sow_generator.utils import unpack_document_by_key
 
 
 class RepositoryAdmin(admin.ModelAdmin):
@@ -110,36 +113,49 @@ def create_sow_one(request):
     visible=False
 )
 def create_sow_two(request):
-    document_key = request.GET["document_key"]
-    document = DOCUMENTS[document_key]
-
-    # Split template into parts
-    # todo: regex for more leniency
-    header, footer = document["template"].split(
-        "<!--- modules - do not remove or alter this line -->"
-    )
-
-    repos = []
-    modules = document.get("required_modules", []) \
-        + document.get("optional_modules", [])
-    for module in modules:
-        try:
-            repo = Repository.objects.get(name=module)
-        except Repository.DoesNotExist:
-            continue
-        repos.append(repo)
-
+    key = request.GET["document_key"]
+    document, header, footer, repos = unpack_document_by_key(key)
     extra = {
         "document": document,
         "header": header,
         "footer": footer,
-        "repos": repos
+        "repos": repos,
+        "form": GenerateForm(document_key=key, allowed_repos=repos)
     }
     return render_to_response(
         "admin/sow_generator/create_sow_two.html",
         extra,
         context_instance=RequestContext(request)
     )
+
+
+@admin.site.register_view(
+    "generate-sow",
+    "_",
+    urlname="sow-generator-generate-sow",
+    visible=False,
+)
+def generate_sow(request):
+    key = request.POST["document_key"]
+    document, header, footer, repos = unpack_document_by_key(key)
+    form = GenerateForm(request.POST, document_key=key, allowed_repos=repos)
+    dc = form.is_valid()
+    # Assemble a single concatenated markdown file
+    md = "%s\n%s\n%s" % (
+        header,
+        "\n".join([r.readme_md for r in form.cleaned_data["repos"]]),
+        footer
+    )
+    # Markdown needs to be converted, so pandoc
+    doc = pandoc.Document()
+    doc.markdown = md
+    response = HttpResponse(
+        doc.html,
+        content_type="text/html",
+    )
+    filename = "Untitled %s scope of work - created %s.html" % (key, timezone.now().strftime("%Y-%m-%d %H:%M"))
+    response["Content-Disposition"] = 'attachment; filename="%s"' % filename
+    return response
 
 
 admin.site.register(Repository, RepositoryAdmin)

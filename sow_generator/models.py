@@ -48,8 +48,6 @@ class Repository(models.Model):
 
     @property
     def readme_html(self):
-        if not self.readme:
-            return ""
         # todo: cache
         doc = pandoc.Document()
         if self.readme_format == "rst":
@@ -57,6 +55,19 @@ class Repository(models.Model):
         elif self.readme_format == "md":
             doc.markdown = self.readme
         return doc.html
+
+    @property
+    def readme_md(self):
+        if not self.readme:
+            return ""
+        if self.readme_format == "md":
+            return self.readme
+        # todo: cache
+        if self.readme_format == "rst":
+            doc = pandoc.Document()
+            doc.rst = self.readme
+            return doc.markdown
+        return self.readme
 
 
 class AuthToken(models.Model):

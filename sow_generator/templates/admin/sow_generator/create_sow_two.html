@@ -21,10 +21,17 @@
             });
 
             $(document).on('change', 'div.includer input', function(e){
+                var arr = [];
+                $('div.includer input').each(function(i){
+                    var el = $(this);
+                    if (el.prop('checked'))
+                        arr.push(el.val());
+                });
+                $('#id_repos').val(arr.join(','));
                 return false;
             });
 
-    });
+        });
     </script>
 
     <style type="text/css">
@@ -44,9 +51,15 @@
     </style>
 
     <h1>Select and order modules</h1>
-    <div class="buttons">
-        <input type="submit" value="Generate!" />
-    </div>
+    <p>Select and reorder modules. Generate an HTML file that can be imported into Google Drive.</p>
+    <form action="/admin/generate-sow" method="POST" >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="buttons">
+            <input type="submit" value="Generate!" />
+        </div>
+    </form>
+
     <br/ >
     <hr />
     <br />
@@ -59,7 +72,7 @@
                 <li>
                     <div class="title">{{ repo.name }}</div>
                     <div class="sizer"></div>
-                    <div class="includer"><input type="checkbox" value="1" checked /></div>
+                    <div class="includer"><input type="checkbox" value="{{ repo.id }}" checked /></div>
                     <div class="content" style="display: none;">
                         {{ repo.readme_html|safe }}
                     </div>

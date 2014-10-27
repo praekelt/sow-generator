@@ -150,7 +150,7 @@ def generate_sow(request):
     # Assemble a single concatenated markdown file
     md = "%s\n%s\n%s" % (
         header,
-        "\n".join([r.readme_md for r in form.cleaned_data["repos"]]),
+        "\n".join([r.sow_md for r in form.cleaned_data["repos"]]),
         footer
     )
     # Markdown needs to be converted, so pandoc

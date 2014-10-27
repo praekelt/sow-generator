@@ -35,7 +35,13 @@
     </script>
 
     <style type="text/css">
-        ul.sortable li { cursor: grab; }
+        ul.sortable li { list-style-type: none; }
+        ul.sortable li {
+            border: dashed 1px #cccccc;
+            padding: 12px;
+            margin-bottom: 20px;
+            cursor: move;
+        }
         div.title { float: left; }
         div.sizer {
             cursor: pointer;
@@ -47,7 +53,7 @@
         }
         div.maximized { background-image: url('{% static 'admin/sow_generator/images/arrow_up.png' %}'); }
         div.includer { float: left; }
-        div.content { clear: both; }
+        div.content { clear: both; margin-top: 12px; }
         div.clear { clear: both; }
     </style>
 
@@ -74,6 +80,7 @@
                     <div class="title">{{ repo.name }}</div>
                     <div class="sizer"></div>
                     <div class="includer"><input type="checkbox" value="{{ repo.id }}" checked /></div>
+                    <div class="clear"></div>
                     <div class="content" style="display: none;">
                         {% if repo.sow %}
                             {{ repo.sow_html|safe }}
@@ -81,7 +88,6 @@
                             Repo is missing SOW.md
                         {% endif %}
                     </div>
-                    <div class="clear"></div>
                 </li>
             {% endfor %}
         </ul>

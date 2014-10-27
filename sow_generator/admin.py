@@ -54,7 +54,7 @@ def ajax_sync_repository(request):
 
 @admin.site.register_view(
     "get-auth-token",
-    "Refresh Github auth token",
+    "Refresh Github auth token for Scope of Work Generator",
     urlname="sow-generator-get-auth-token"
 )
 def get_auth_token(request):

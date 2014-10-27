@@ -48,6 +48,7 @@
         div.maximized { background-image: url('{% static 'admin/sow_generator/images/arrow_up.png' %}'); }
         div.includer { float: left; }
         div.content { clear: both; }
+        div.clear { clear: both; }
     </style>
 
     <h1>Select and order modules</h1>
@@ -74,8 +75,13 @@
                     <div class="sizer"></div>
                     <div class="includer"><input type="checkbox" value="{{ repo.id }}" checked /></div>
                     <div class="content" style="display: none;">
-                        {{ repo.readme_html|safe }}
+                        {% if repo.sow %}
+                            {{ repo.sow_html|safe }}
+                        {% else %}
+                            Repo is missing SOW.md
+                        {% endif %}
                     </div>
+                    <div class="clear"></div>
                 </li>
             {% endfor %}
         </ul>

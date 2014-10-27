@@ -16,8 +16,8 @@ class Repository(models.Model):
     description = models.TextField(null=True, editable=False)
     readme = models.TextField(null=True, editable=False)
     readme_format = models.CharField(max_length=8, null=True, editable=False)
-    business = models.TextField(null=True, editable=False)
-    business_format = models.CharField(max_length=8, null=True, editable=False)
+    sow = models.TextField(null=True, editable=False)
+    sow_format = models.CharField(max_length=8, null=True, editable=False)
 
     class Meta:
         verbose_name_plural = "Repositories"
@@ -46,28 +46,46 @@ class Repository(models.Model):
         else:
             return "praekelt", li[0]
 
-    @property
-    def readme_html(self):
+    def _field_html(self, fieldname):
+        field_value = getattr(self, fieldname)
+        field_format = getattr(self, "%s_format" % fieldname)
         # todo: cache
         doc = pandoc.Document()
-        if self.readme_format == "rst":
-            doc.rst = self.readme
-        elif self.readme_format == "md":
-            doc.markdown = self.readme
+        if field_format == "rst":
+            doc.rst = field_value
+        elif field_format == "md":
+            doc.markdown = field_value
         return doc.html
+
+    def _field_md(self, fieldname):
+        field_value = getattr(self, fieldname)
+        field_format = getattr(self, "%s_format" % fieldname)
+        if not field_value:
+            return ""
+        if field_format == "md":
+            return field_value
+        # todo: cache
+        if field_format == "rst":
+            doc = pandoc.Document()
+            doc.rst = field_value
+            return doc.markdown
+        return field_value
+
+    @property
+    def readme_html(self):
+        return self._field_html("readme")
 
     @property
     def readme_md(self):
-        if not self.readme:
-            return ""
-        if self.readme_format == "md":
-            return self.readme
-        # todo: cache
-        if self.readme_format == "rst":
-            doc = pandoc.Document()
-            doc.rst = self.readme
-            return doc.markdown
-        return self.readme
+        return self._field_md("readme")
+
+    @property
+    def sow_html(self):
+        return self._field_html("sow")
+
+    @property
+    def sow_md(self):
+        return self._field_md("sow")
 
 
 class AuthToken(models.Model):

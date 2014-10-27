@@ -23,8 +23,15 @@ from sow_generator.utils import unpack_document_by_key
 
 
 class RepositoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "title", "description", "_actions")
+    list_display = ("name", "title", "description", "_has_sow", "_actions")
     search_fields = ("name", "title",)
+
+    def _has_sow(self, obj):
+        if not obj.sow:
+            return """<font color="red">Repo is missing SOW.md</font>"""
+        return ""
+    _has_sow.short_description = "Has SOW"
+    _has_sow.allow_tags = True
 
     def _actions(self, obj):
         url = "/admin/ajax-sync-repository?id=%s" % obj.id

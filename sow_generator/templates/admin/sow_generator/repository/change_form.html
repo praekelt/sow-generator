@@ -2,12 +2,14 @@
 
 {% block after_related_objects %}
 
-<fieldset class="module aligned">
-    <div class="form-row">
-    <label>Readme</label>
-    <br />
-    {{ original.readme_html|safe }}
-    </div>
-</fieldset>
+    <fieldset class="module">
+        <div class="form-row">
+            {% if original.sow %}
+                {{ original.sow_html|safe }}
+            {% else %}
+                You must create SOW.md in the repository!
+            {% endif %}
+        </div>
+    </fieldset>
 
 {% endblock %}

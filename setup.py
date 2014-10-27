@@ -22,6 +22,7 @@ setup(
         'github3.py',
         'pyandoc',
         'django-object-tools',
+        'django-adminplus'
     ],
     include_package_data=True,
     tests_require=[

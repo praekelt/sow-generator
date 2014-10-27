@@ -53,8 +53,14 @@ class Repository(models.Model):
         doc = pandoc.Document()
         if field_format == "rst":
             doc.rst = field_value
+            return doc.html
         elif field_format == "md":
             doc.markdown = field_value
+            # The breaks do not render nicely unless they're doubled
+            # todo: use beautifulsoup because we only want to touch br's
+            # contained within a p
+            html = doc.html.replace("<br />", "<br /><br />")
+            return html
         return doc.html
 
     def _field_md(self, fieldname):

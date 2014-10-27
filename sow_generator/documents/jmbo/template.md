@@ -1,7 +1,7 @@
 <center>
 Scope of Work
 
-## NoW Mobi (Phase 2)
+## Project name
 
 Client: Client name
 
@@ -16,47 +16,38 @@ Creative sign off: Gustav Greffrath
 Business sign off: Business manager name
 </center>
 
-[Overview](#overview)
+Overview
 
-[Modules](#modules)
+Modules
 
-[Risks](#risks)
+Risks
 
-[Dashboards](#dashboards)
+Dashboards
 
-[Reporting](#reporting)
+Reporting
 
-[Technical](#technical)
+Technical
 
 ## Overview
 
 This is an overview of the project.
 
-<!--- modules - do not remove or alter this line -->
-
-<a name="modules"></a>
-
 ## Modules
 
-<a name="risks"></a>
+<!--- modules start - do not remove or alter this line -->
+<!--- modules end - do not remove or alter this line -->
 
 ## Risks
-
-<a name="dashboards"></a>
 
 ## Dashboards
 
 List the type of dashboard(s) if applicable, eg. Holodeck, Gecko, Sapphire.
-
-<a name="reporting"></a>
 
 ## Reporting
 
 List the type of reporting if applicable, eg. Google Analytics.
 
 ## Technical
-
-<a name="technical"></a>
 
 **Hosting**
 

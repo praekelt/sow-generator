@@ -9,7 +9,7 @@ def unpack_document_by_key(key):
     # Split template into parts
     # todo: regex for more leniency
     header, footer = document["template"].split(
-        "<!--- modules - do not remove or alter this line -->"
+        "<!--- modules start - do not remove or alter this line -->"
     )
 
     repos = []

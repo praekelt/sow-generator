@@ -147,15 +147,18 @@ def generate_sow(request):
     document, header, footer, repos = unpack_document_by_key(key)
     form = GenerateForm(request.POST, document_key=key, allowed_repos=repos)
     dc = form.is_valid()
+
     # Assemble a single concatenated markdown file
     md = "%s\n%s\n%s" % (
         header,
         "\n".join([r.sow_md for r in form.cleaned_data["repos"]]),
         footer
     )
+
     # Markdown needs to be converted, so pandoc
     doc = pandoc.Document()
     doc.markdown = md
+
     response = HttpResponse(
         doc.html,
         content_type="text/html",

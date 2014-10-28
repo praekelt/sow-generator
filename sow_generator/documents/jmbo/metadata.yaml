@@ -1,5 +1,8 @@
-title: Jmbo based project
-description: This is a description for a Jmbo based project.
+title: Jmbo project
+description:
+    Jmbo is a CMS built on top of Django. It enables us to build
+    multidevice, media rich and scalable systems rapidly. Typical Jmbo components
+    are posts, galleries, polls and competitions.
 
 required_modules:
     - praekelt/jmbo

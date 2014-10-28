@@ -1,1 +1,5 @@
-title: Django based project
+title: Django project
+
+description:
+    Django is a web application framework. It is used for projects that
+    do not require Jmbo's functionality.

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='sow-generator',
-    version='0.1',
+    version='0.1.1',
     description='Create a scope of work from templates and version controlled documentation.',
     long_description = open('README.rst', 'r').read() + open('CHANGELOG.rst', 'r').read() + open('AUTHORS.rst', 'r').read(),
     author='Hedley Roos',
